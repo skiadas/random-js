@@ -23,10 +23,16 @@ function float2(min, max) {
 	}
 }
 
+// returns a random integer
+function int(min, max) {
+	// need to implement this one
+}
+
 // create the return module 
 module.exports = {
 	float: float,
-	float2: float2
+	float2: float2,
+	int: int
 }
 
 // tests that will not run from "require"
