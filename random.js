@@ -25,7 +25,8 @@ function float2(min, max) {
 
 // create the return module 
 module.exports = {
-	float: float
+	float: float,
+	float2: float2
 }
 
 // tests that will not run from "require"
