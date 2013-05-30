@@ -1,5 +1,7 @@
 // local variable to hold Math.random
-var random = Math.random;
+var random = Math.random,
+    floor = Math.floor,
+    maxInt = Math.pow(2,53);
 
 // float function will return a random float in a given range 
 // min to max
@@ -25,7 +27,20 @@ function float2(min, max) {
 
 // returns a random integer
 function int(min, max) {
-	// need to implement this one
+    var len = arguments.length;
+    if (len === 2) {
+        // two args
+        // returns a value in range floor(min) to floor(max)
+        // assumes max > min (duh)
+        return floor(min + random() * (max - min + 1));
+    } else if (len === 1) {
+        // one argument version 
+        // returns a value in range 0 to less than floor(n)
+        // assumes n is at least one
+        return floor(random() * floor(min));
+    }
+    // no argument version returns an int in range -maxInt to less than maxInt
+    return floor((random() - 0.5) * 2 * maxInt);
 }
 
 // create the return module 
@@ -43,4 +58,7 @@ if (require.main === module) {
 	console.log("float2(5,10) = " , float2(5,10));
 	console.log("float2(10) = " , float2(10));
 	console.log("float2() = ", float2());
+    console.log("int(5,10) = " , int(5,10));
+    console.log("int(10) = " , int(10));
+    console.log("int() = ", int());
 }
