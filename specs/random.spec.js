@@ -82,3 +82,52 @@ describe('Random.int', function() {
         expect(array).toContain(max);
     });
 });
+describe('Random.array', function() {
+    it('is a function', function() {
+        expect(Random.array).toEqual(jasmine.any(Function));
+    });
+    it('returns an array when called with no arg', function() {
+        expect(Random.array().length).toBeDefined();
+    });
+    it('returns an array when called with a num arg', function() {
+        expect(Random.array(10).length).toBeDefined();
+    });
+    it('uses a provided length', function() {
+        var n = Random.int(5,10);
+        expect(Random.array(n).length).toEqual(n);
+        expect(Random.array(n, Random.int).length).toEqual(n);
+    });
+    it('uses a provided random function', function() {
+        var foo = {
+            func: function() {}
+        };
+        spyOn(foo, 'func').andReturn(1);
+        var arr = Random.array(foo.func);
+        expect(foo.func).toHaveBeenCalled();
+        expect(foo.func.calls.length).toEqual(arr.length);
+        var n = Random.int(5,10);
+        Random.array(n, foo.func);
+        expect(foo.func.calls.length).toEqual(arr.length + n);
+    });
+    it('uses uses additional provided args', function() {
+        var foo = {
+            func: function() {}
+        };
+        spyOn(foo, 'func').andReturn(1);
+        var arr = Random.array(foo.func, 1, 2, 3);
+        expect(foo.func).toHaveBeenCalledWith(1, 2, 3);
+    });
+    it('works correctly when provided func is itself', function() {
+        var i,
+            n = Random.int(5, 10),
+            m = Random.int(5, 10),
+            foo = {func: function() {}};
+        spyOn(foo, 'func').andReturn(1);
+        var arr = Random.array(n, Random.array, m, foo.func);
+        expect(foo.func.calls.length).toEqual(n * m);
+        expect(arr.length).toEqual(n);
+        for(i = 0; i < arr.length; i++) {
+            expect(arr[i].length).toEqual(m);
+        }
+    });
+});
