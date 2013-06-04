@@ -80,7 +80,7 @@ function array(n, fun) {
     args[1] = (args[1] || this.float);
     n = args.shift();
     fun = args.shift();
-    for (i = n; i -= 1;) {
+    for (i = n; i--;) {
         result[i] = fun.apply(this, args);
     }
     return result;
