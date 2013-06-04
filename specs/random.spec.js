@@ -64,7 +64,7 @@ describe('Random.int', function() {
             fmin = Math.floor(min),
             fmax = Math.floor(max);
         for(i = 0; i < 1000; i++) {
-            val = Random.int(fmin, fmax);
+            val = Random.int(min, max);
             expect(Math.floor(val)).toBeCloseTo(val, 20);
             expect(val).not.toBeGreaterThan(fmax);
             expect(val).not.toBeLessThan(fmin);

@@ -38,6 +38,8 @@ function int(min, max) {
         // two args
         // returns a value in range floor(min) to floor(max)
         // assumes max > min (duh)
+        min = floor(min);
+        max = floor(max);
         return floor(min + random() * (max - min + 1));
     } else if (len === 1) {
         // one argument version 
