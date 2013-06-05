@@ -131,3 +131,35 @@ describe('Random.array', function() {
         }
     });
 });
+describe('Random.string', function() {
+    it('is a function', function() {
+        expect(Random.string).toEqual(jasmine.any(Function));
+    });
+    it('returns a string in all cases', function() {
+        expect(Random.string()).toEqual(jasmine.any(String));
+        expect(Random.string(12)).toEqual(jasmine.any(String));
+        expect(Random.string('alpha')).toEqual(jasmine.any(String));
+        expect(Random.string(5,'alpha')).toEqual(jasmine.any(String));       
+    });
+    it('uses a provided length', function() {
+        var n = Random.int(5,10);
+        expect(Random.string(n).length).toEqual(n);
+        expect(Random.string(n, 'alpha').length).toEqual(n);
+    });
+    it('returns the expected type of string', function() {
+        var s = Random.string(10000,'alpha');
+        expect(s).toMatch(/^[a-zA-Z]+$/);  // chars are all alphabetic
+        expect(s).toContain('a');
+        expect(s).toContain('z');
+        expect(s).toContain('A');
+        expect(s).toContain('Z');
+        s = Random.string(10000);  // should use alphnum (default)
+        expect(s).toMatch(/^[a-zA-Z0-9]+$/);  // chars are all alphabetic
+        expect(s).toContain('a');
+        expect(s).toContain('z');
+        expect(s).toContain('A');
+        expect(s).toContain('Z');
+        expect(s).toContain('0');
+        expect(s).toContain('9');
+    });
+});

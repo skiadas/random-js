@@ -85,6 +85,27 @@ function array(n, fun) {
     }
     return result;
 }
+// returns an ASCII code for random length-1 string
+function _char(type) {
+    var n = int(65, 90),  // caps
+        lc = int(0, 1),   // 1 for lowercase
+        d = int(48, 57);  // digit
+    switch (type) {
+    case 'alpha':
+        return n + lc * 32;
+    case 'alphanum':  // fall through to default
+    default:
+        // 10/62 chance of a digit
+        return (random() < 10/62) ? d : (n + 32 * lc);
+    }
+}
+// returns a random string of specified length and type
+function string(n, type) {
+    // expecting n to be a whole number, type a string
+    var args = slice(arguments);
+    args.splice((typeof args[0] === 'number') ? 1 : 0, 0, _char);
+    return String.fromCharCode.apply(String, this.array.apply(this,args));
+}
 
 // create the return module 
 module.exports = {
@@ -92,6 +113,7 @@ module.exports = {
     float2: float2,
     int: int,
     array: array,
+    string: string,
     MAX_ARRAY_LEN: 20
 };
 
@@ -116,4 +138,6 @@ if (require.main === module) {
     console.log("array no args:", module.exports.array());
     console.log("args is 0", module.exports.array(0));
     console.log("args is 1", module.exports.array(1));
+    console.log('string() = ', module.exports.string());
+    console.log('string(8) = ', module.exports.string(8));
 }
