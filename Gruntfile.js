@@ -17,6 +17,13 @@ module.exports = function (grunt) {
                 'tests/{,*/}*.js'
             ]
         },
+        uglify: {
+            all: {
+                files: {
+                    'random.min.js': [ 'random.js' ]
+                }
+            }
+        },
         mocha: {
             all: {
                 options: {
@@ -26,28 +33,14 @@ module.exports = function (grunt) {
             }
         },
         concurrent: {
-            server: [
-                'coffee:dist',
-                'compass:server'
-            ],
-            test: [
-                'coffee',
-                'compass'
-            ],
-            dist: [
-                'coffee',
-                'compass:dist',
-                'imagemin',
-                'svgmin',
-                'htmlmin'
-            ]
         },
     });
 
     grunt.registerTask('test', [ 'mocha' ]);
-
+    grunt.registerTask('minify', [ 'uglify' ]);
     grunt.registerTask('default', [
         'jshint',
-        'test'
+        'test',
+        'minify'
     ]);
 };
