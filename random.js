@@ -1,4 +1,5 @@
 'use strict';
+/* global define */
 // if the module has no dependencies, the above pattern can be simplified to
 (function (root, factory) {
     if (typeof exports === 'object') {
