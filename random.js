@@ -108,7 +108,8 @@
         switch (type) {
         case 'alpha':
             return n + lc * 32;
-        case 'alphanum':  // fall through to default
+        case 'alphanum': 
+            /*falls through*/
         default:
             // 10/62 chance of a digit
             return (random() < 10/62) ? d : (n + 32 * lc);
