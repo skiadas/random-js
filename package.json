@@ -14,7 +14,7 @@
   ],
   "private": true,
   "scripts": {
-    "test": "jasmine-node specs/",
+    "test": "grunt test",
     "predeploy": "echo This will be run before deploying the app",
     "postdeploy": "echo This will be run after deploying the app"
   },
