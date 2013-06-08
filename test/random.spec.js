@@ -1,18 +1,19 @@
 var Random = require('../random.js');
 describe('Random.float', function() {
     it('is a function', function() {
-        expect(Random.float).toEqual(jasmine.any(Function));
+        expect(Random.float).to.be.a('function');
+        expect(Random).to.respondTo('float');
     });
     it('returns a number', function() {
-        expect(Random.float()).toEqual(jasmine.any(Number));
+        expect(Random.float()).to.be.a('number');
     });
     it('defaults to a float from 0 to less than 1', function() {
         var i,
             val;
         for(i=0; i<1000; i++) {
             val = Random.float();
-            expect(val).toBeLessThan(1);
-            expect(val).not.toBeLessThan(0);
+            expect(val).to.be.below(1);
+            expect(val).to.be.at.least(0);
         }
     });
     it('accepts a single (max) arg', function() {
@@ -20,8 +21,8 @@ describe('Random.float', function() {
         max = Math.random()*1000+1; // max > 0
         for(i=0; i<1000; i++) {
             val = Random.float(max);
-            expect(val).toBeLessThan(max);
-            expect(val).not.toBeLessThan(0);
+            expect(val).to.be.below(max);
+            expect(val).to.be.at.least(0);
         }
     });
     it('accepts a min and a max', function() {
@@ -30,19 +31,20 @@ describe('Random.float', function() {
         max = min + Math.random()*1000;
         for(i=0; i<1000; i++) {
             val = Random.float(min,max);
-            expect(val).toBeLessThan(max);
-            expect(val).not.toBeLessThan(min);
+            expect(val).to.be.below(max);
+            expect(val).to.be.at.least(min);
         }
     });
 });
 describe('Random.int', function() {
     it('is a function', function() {
-        expect(Random.int).toEqual(jasmine.any(Function));
+        expect(Random.int).to.be.a('function');
+        expect(Random).to.respondTo('int');
     });
     it('returns an int', function() {
         var val = Random.int();
-        expect(val).toEqual(jasmine.any(Number));
-        expect(Math.floor(val)).toBeCloseTo(val, 20);
+        expect(val).to.be.a('number');
+        expect(Math.floor(val)).to.be.closeTo(val, 1e-20)
     });
     it('accepts a single (sort of max) arg', function() {
         var i, val, max, fmax;
@@ -50,9 +52,9 @@ describe('Random.int', function() {
         fmax = Math.floor(max);
         for(i=0; i<1000; i++) {
             val = Random.int(max);
-            expect(Math.floor(val)).toBeCloseTo(val, 20);
-            expect(val).toBeLessThan(fmax);
-            expect(val).not.toBeLessThan(0);
+            expect(Math.floor(val)).to.be.closeTo(val, 1e-20)
+            expect(val).to.be.below(fmax);
+            expect(val).to.be.at.least(0);
         }
     });
     it('accepts a min and a max', function() {
@@ -65,9 +67,9 @@ describe('Random.int', function() {
             fmax = Math.floor(max);
         for(i = 0; i < 1000; i++) {
             val = Random.int(min, max);
-            expect(Math.floor(val)).toBeCloseTo(val, 20);
-            expect(val).not.toBeGreaterThan(fmax);
-            expect(val).not.toBeLessThan(fmin);
+            expect(Math.floor(val)).to.be.closeTo(val, 1e-20)
+            expect(val).to.be.at.most(fmax);
+            expect(val).to.be.at.least(fmin);
         }
     });
     it('should achieve both min and max', function() {
@@ -78,88 +80,81 @@ describe('Random.int', function() {
         for(i = 500; i -= 1;) {
             array[i] = Random.int(min, max);
         }
-        expect(array).toContain(min);
-        expect(array).toContain(max);
+        expect(array).to.contain(min);
+        expect(array).to.contain(max);
     });
 });
 describe('Random.array', function() {
     it('is a function', function() {
-        expect(Random.array).toEqual(jasmine.any(Function));
+        expect(Random.array).to.be.a('function');
     });
     it('returns an array when called with no arg', function() {
-        expect(Random.array().length).toBeDefined();
+        expect(Random.array().length).to.be.defined;
     });
     it('returns an array when called with a num arg', function() {
-        expect(Random.array(10).length).toBeDefined();
+        expect(Random.array(10).length).to.be.defined;
     });
     it('uses a provided length', function() {
         var n = Random.int(5,10);
-        expect(Random.array(n).length).toEqual(n);
-        expect(Random.array(n, Random.int).length).toEqual(n);
+        expect(Random.array(n).length).to.equal(n);
+        expect(Random.array(n, Random.int).length).to.equal(n);
     });
     it('uses a provided random function', function() {
-        var foo = {
-            func: function() {}
-        };
-        spyOn(foo, 'func').andReturn(1);
-        var arr = Random.array(foo.func);
-        expect(foo.func).toHaveBeenCalled();
-        expect(foo.func.calls.length).toEqual(arr.length);
+        var spy = sinon.stub().returns(1);
+        var arr = Random.array(spy);
+        expect(spy).to.have.been.called;
+        expect(spy.callCount).to.equal(arr.length);
         var n = Random.int(5,10);
-        Random.array(n, foo.func);
-        expect(foo.func.calls.length).toEqual(arr.length + n);
+        Random.array(n, spy);
+        expect(spy.callCount).to.equal(arr.length + n);
     });
     it('uses uses additional provided args', function() {
-        var foo = {
-            func: function() {}
-        };
-        spyOn(foo, 'func').andReturn(1);
-        var arr = Random.array(foo.func, 1, 2, 3);
-        expect(foo.func).toHaveBeenCalledWith(1, 2, 3);
+        var spy = sinon.stub().returns(1);
+        var arr = Random.array(spy, 1, 2, 3);
+        expect(spy).to.have.been.calledWith(1, 2, 3);
     });
     it('works correctly when provided func is itself', function() {
         var i,
             n = Random.int(5, 10),
             m = Random.int(5, 10),
-            foo = {func: function() {}};
-        spyOn(foo, 'func').andReturn(1);
-        var arr = Random.array(n, Random.array, m, foo.func);
-        expect(foo.func.calls.length).toEqual(n * m);
-        expect(arr.length).toEqual(n);
+            spy = sinon.stub().returns(1),
+            arr = Random.array(n, Random.array, m, spy);
+        expect(spy.callCount).to.equal(n * m);
+        expect(arr.length).to.equal(n);
         for(i = 0; i < arr.length; i++) {
-            expect(arr[i].length).toEqual(m);
+            expect(arr[i].length).to.equal(m);
         }
     });
 });
 describe('Random.string', function() {
     it('is a function', function() {
-        expect(Random.string).toEqual(jasmine.any(Function));
+        expect(Random.string).to.be.a('function');
     });
     it('returns a string in all cases', function() {
-        expect(Random.string()).toEqual(jasmine.any(String));
-        expect(Random.string(12)).toEqual(jasmine.any(String));
-        expect(Random.string('alpha')).toEqual(jasmine.any(String));
-        expect(Random.string(5,'alpha')).toEqual(jasmine.any(String));       
+        expect(Random.string()).to.be.a('string');
+        expect(Random.string(12)).to.be.a('string');
+        expect(Random.string('alpha')).to.be.a('string');
+        expect(Random.string(5,'alpha')).to.be.a('string');       
     });
     it('uses a provided length', function() {
         var n = Random.int(5,10);
-        expect(Random.string(n).length).toEqual(n);
-        expect(Random.string(n, 'alpha').length).toEqual(n);
+        expect(Random.string(n).length).to.equal(n);
+        expect(Random.string(n, 'alpha').length).to.equal(n);
     });
     it('returns the expected type of string', function() {
         var s = Random.string(10000,'alpha');
-        expect(s).toMatch(/^[a-zA-Z]+$/);  // chars are all alphabetic
-        expect(s).toContain('a');
-        expect(s).toContain('z');
-        expect(s).toContain('A');
-        expect(s).toContain('Z');
+        expect(s).to.match(/^[a-zA-Z]+$/);  // chars are all alphabetic
+        expect(s).to.contain('a');
+        expect(s).to.contain('z');
+        expect(s).to.contain('A');
+        expect(s).to.contain('Z');
         s = Random.string(10000);  // should use alphnum (default)
-        expect(s).toMatch(/^[a-zA-Z0-9]+$/);  // chars are all alphabetic
-        expect(s).toContain('a');
-        expect(s).toContain('z');
-        expect(s).toContain('A');
-        expect(s).toContain('Z');
-        expect(s).toContain('0');
-        expect(s).toContain('9');
+        expect(s).to.match(/^[a-zA-Z0-9]+$/);  // chars are all alphabetic
+        expect(s).to.contain('a');
+        expect(s).to.contain('z');
+        expect(s).to.contain('A');
+        expect(s).to.contain('Z');
+        expect(s).to.contain('0');
+        expect(s).to.contain('9');
     });
 });

@@ -41,7 +41,9 @@
       "grunt-concurrent": "~0.1.0",
       "matchdep": "~0.1.1",
       "connect-livereload": "~0.1.1",
-      "mocha": "~1.10.0"
+      "mocha": "~1.10.0",
+      "chai": "~1.6.1",
+      "sinon-chai": "*"
   },
   "license": "MIT",
    "engines": {
