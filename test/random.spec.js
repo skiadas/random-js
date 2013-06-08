@@ -68,8 +68,8 @@ describe('Random.int', function() {
         for(i = 0; i < 1000; i++) {
             val = Random.int(min, max);
             expect(Math.floor(val)).to.be.closeTo(val, 1e-20)
-            expect(val).to.be.at.most(fmax);
-            expect(val).to.be.at.least(fmin);
+            expect(val).to.be.at.most(fmax)
+                .and.to.be.at.least(fmin);
         }
     });
     it('should achieve both min and max', function() {
