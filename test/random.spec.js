@@ -102,7 +102,6 @@ describe('Random.array', function() {
     it('uses a provided random function', function() {
         var spy = sinon.stub().returns(1);
         var arr = Random.array(spy);
-        spy.should.have.been.called;
         spy.callCount.should.equal(arr.length);
         var n = Random.int(5,10);
         Random.array(n, spy);
