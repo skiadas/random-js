@@ -1,4 +1,4 @@
-var Random = require('../random.js');
+var Random = Random || require('../random.js');
 describe('Random.float', function() {
     it('is a function', function() {
         expect(Random.float).to.be.a('function');

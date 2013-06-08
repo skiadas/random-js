@@ -1,0 +1,39 @@
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Mocha Tests</title>
+  <link rel="stylesheet" href="mocha.css" />
+</head>
+<body>
+  <div id="mocha"></div>
+  <script>
+  // PhantomJS uses older version of JS
+  if (typeof Function.prototype.bind === 'undefined') {
+    Function.prototype.bind = function(context) {
+      var func = this;
+      return function() {
+          return func.apply(context, Array.prototype.slice.call(arguments));
+      };
+    };
+  }
+  </script>
+  <script src="../node_modules/grunt-mocha/node_modules/mocha/mocha.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../node_modules/chai/chai.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../node_modules/sinon-chai/lib/sinon-chai.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../node_modules/sinon/lib/sinon.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../node_modules/sinon/lib/sinon/spy.js" type="text/javascript" charset="utf-8"></script>
+  <script src="../node_modules/sinon/lib/sinon/stub.js" type="text/javascript" charset="utf-8"></script>
+  <script type="text/javascript" charset="utf-8">mocha.setup('bdd'); var expect = chai.expect; var should = chai.should()</script>
+  <script src="../random.js" type="text/javascript" charset="utf-8"></script>
+  <script src="random.spec.js" type="text/javascript" charset="utf-8"></script>
+  <script type="text/javascript" charset="utf-8">
+  mocha.checkLeaks();
+  console.log("HI THERE!")
+  if (navigator.userAgent.indexOf('PhantomJS') < 0) {
+      mocha
+          // .globals(['Wombat', 'Apple']) // acceptable globals
+          .run();
+  }
+  </script>
+</body>
+</html>

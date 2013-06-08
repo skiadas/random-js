@@ -24,19 +24,21 @@ module.exports = function (grunt) {
                 }
             }
         },
+        mochacli: {
+            all: [ 'test/**/*.spec.js' ]
+        },
         mocha: {
-            all: {
-                options: {
-                    run: true,
-        // urls: ['http://localhost:<%= connect.options.port %>/index.html']
-                }
-            }
+            options: {
+                bail: true,
+                run: true
+            },
+            all: [ 'test/**/*.html' ]
         },
         concurrent: {
         },
     });
 
-    grunt.registerTask('test', [ 'mocha' ]);
+    grunt.registerTask('test', [ 'mocha', 'mochacli' ]);
     grunt.registerTask('minify', [ 'uglify' ]);
     grunt.registerTask('default', [
         'jshint',

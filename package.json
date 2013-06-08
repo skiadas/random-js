@@ -37,6 +37,7 @@
       "grunt-contrib-watch": "~0.4.0",
       "grunt-usemin": "~0.1.10",
       "grunt-mocha": "~0.3.0",
+      "grunt-mocha-cli": "*",
       "grunt-open": "~0.2.0",
       "grunt-concurrent": "~0.1.0",
       "matchdep": "~0.1.1",
