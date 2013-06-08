@@ -86,32 +86,32 @@ describe('Random.int', function() {
 });
 describe('Random.array', function() {
     it('is a function', function() {
-        expect(Random.array).to.be.a('function');
+        Random.array.should.be.a('function');
     });
     it('returns an array when called with no arg', function() {
-        expect(Random.array().length).to.be.defined;
+        Random.array().length.should.be.defined;
     });
     it('returns an array when called with a num arg', function() {
-        expect(Random.array(10).length).to.be.defined;
+        Random.array(10).length.should.be.defined;
     });
     it('uses a provided length', function() {
         var n = Random.int(5,10);
-        expect(Random.array(n).length).to.equal(n);
-        expect(Random.array(n, Random.int).length).to.equal(n);
+        Random.array(n).length.should.equal(n);
+        Random.array(n, Random.int).length.should.equal(n);
     });
     it('uses a provided random function', function() {
         var spy = sinon.stub().returns(1);
         var arr = Random.array(spy);
-        expect(spy).to.have.been.called;
-        expect(spy.callCount).to.equal(arr.length);
+        spy.should.have.been.called;
+        spy.callCount.should.equal(arr.length);
         var n = Random.int(5,10);
         Random.array(n, spy);
-        expect(spy.callCount).to.equal(arr.length + n);
+        spy.callCount.should.equal(arr.length + n);
     });
     it('uses uses additional provided args', function() {
         var spy = sinon.stub().returns(1);
         var arr = Random.array(spy, 1, 2, 3);
-        expect(spy).to.have.been.calledWith(1, 2, 3);
+        spy.should.have.been.calledWith(1, 2, 3);
     });
     it('works correctly when provided func is itself', function() {
         var i,
@@ -119,10 +119,10 @@ describe('Random.array', function() {
             m = Random.int(5, 10),
             spy = sinon.stub().returns(1),
             arr = Random.array(n, Random.array, m, spy);
-        expect(spy.callCount).to.equal(n * m);
-        expect(arr.length).to.equal(n);
+        spy.callCount.should.equal(n * m);
+        arr.length.should.equal(n);
         for(i = 0; i < arr.length; i++) {
-            expect(arr[i].length).to.equal(m);
+            arr[i].length.should.equal(m);
         }
     });
 });
