@@ -29,7 +29,6 @@ module.exports = function (grunt) {
         },
         mocha: {
             options: {
-                bail: true,
                 run: true
             },
             all: [ 'test/**/*.html' ]
